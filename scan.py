@@ -1,20 +1,20 @@
-'''
-Отыскивает наибольший файл с исходным программным кодом на языке Python
-в единственном каталоге.
-Поиск выполняется в каталоге стандартной биб­лиотеки Python для Windows, если
-в аргументе командной строки не был указан какой-то другой каталог.
-'''
+import sys, os, pprint
 
-import os, glob, sys
-
+trace = 0
 dirname = r'./Texts' if len(sys.argv) == 1 else sys.argv[1]
+
 allsizes = []
-
-allpy = glob.glob(dirname + os.sep + '*.txt')
-for filename in allpy:
-    filesize = os.path.getsize(filename)
-    allsizes.append((filesize, filename))
+for (thisDir, subsHere, filesHere) in os.walk(dirname, followlinks=True):
+    if trace: print(thisDir)
+    for filename in filesHere:
+        if filename.endswith('.txt'):
+            if trace: print('...', filename)
+            fullname = os.path.join(thisDir, filename)
+            fullsize = os.path.getsize(fullname)
+            allsizes.append((fullsize, fullname))
 allsizes.sort()
+pprint.pprint(allsizes[:2])
+pprint.pprint(allsizes[-2:])
 
-print(allsizes[:2])
-print(allsizes[-2:])
+
+
