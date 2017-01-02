@@ -7,10 +7,10 @@
 
 import os, glob, sys
 
-dirname = r'/media/win_hdd/_Data/Text/En/Sub' if len(sys.argv) == 1 else sys.argv[1]
+dirname = r'./Texts' if len(sys.argv) == 1 else sys.argv[1]
 allsizes = []
 
-allpy = glob.glob(dirname + os.sep + '*.srt')
+allpy = glob.glob(dirname + os.sep + '*.txt')
 for filename in allpy:
     filesize = os.path.getsize(filename)
     allsizes.append((filesize, filename))
