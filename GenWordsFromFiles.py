@@ -1,14 +1,35 @@
 import os, re
+import cchardet as chardet
 
-spliter = re.compile("((?:[a-zA-Z]+[-']?)*[a-zA-Z]+)")   ##r'\w+')
-
+#spliter = re.compile("((?:[a-zA-Z]+[-']?)*[a-zA-Z]+)")   ##r'\w+')
+spliter = re.compile(r'\w+')
 def gen_wordslist(line):
     yield spliter.findall(line.lower())
     ##yield line.split()
 
+def detect_encoding(fullname):
+    with open(fullname, 'rb') as data:
+        result = chardet.detect(data.read())
+    return result['encoding']
 
+encodings = ['windows-1251', 'utf-8', 'cp866', 'KOI8-R']
+def detect_encoding_fast(fullname):
+    for e in encodings:
+        try:
+            with open(fullname, encoding=e) as data:
+                data.readlines()
+        except UnicodeDecodeError:
+            print('got unicode error with %s , trying different encoding' % e)
+        else:
+            print('opening the file with encoding:  %s ' % e)
+            break
+
+    
 def gen_lines(fullname):
-    with open(fullname) as data:    #, encoding="cp866"
+    encoding = detect_encoding(fullname)
+    ##if encoding == 'MAC-CYRILLIC' : encoding = 'windows-1251'
+    print(fullname, encoding)
+    with open(fullname, encoding=encoding) as data:    #, encoding='MAC-CYRILLIC' cp866
         if fullname.endswith('.srt'):
             numLineInBlock = 0
             for line in data:
@@ -59,5 +80,5 @@ if __name__ == "__main__":
     c = Counter(words)
 
 
-    print(c.most_common()[:-60:-1])
-    pprint.pprint(c.most_common(30))
+    print(c.most_common()[:-50:-1])
+    pprint.pprint(c.most_common(25))
