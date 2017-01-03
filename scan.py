@@ -1,10 +1,12 @@
 import sys, pprint
-from GenWordsFromFiles import *  ## as wg
+from collections  import Counter
+import GenWordsFromFiles as wg
 
 dirname = r'./Texts' if len(sys.argv) == 1 else sys.argv[1]
 
-##words = []
-words = gen_words(dirname)
+words = wg.gen_words(dirname)
+c = Counter(words)
 
-print(words[:60])
-pprint.pprint(words[:13])
+
+print(c.most_common()[:-60:-1])
+pprint.pprint(c.most_common(30))
