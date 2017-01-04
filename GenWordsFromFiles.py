@@ -67,18 +67,27 @@ def gen_words(dirname):
 
 '''
 TODO: Склеивать в абзац, определять пунктуацию
-Reading varias coding of text
 '''
 
 if __name__ == "__main__":
-    import sys, pprint
+    import sys, pprint, pickle
     from collections  import Counter
-    
-    dirname = r'./Texts' if len(sys.argv) == 1 else sys.argv[1]
 
-    words = gen_words(dirname)
+    try:
+        with open('data.pickle', 'rb') as f:
+            words = pickle.load(f)
+    except:
+        readed_pickle = False
+        dirname = r'./Texts' if len(sys.argv) == 1 else sys.argv[1]
+        words = gen_words(dirname)
+    else:
+        readed_pickle = True
+
+
     c = Counter(words)
-
-
     print(c.most_common()[:-50:-1])
     pprint.pprint(c.most_common(25))
+
+    if readed_pickle == False:
+        with open('data.pickle', 'wb') as f:
+            pickle.dump(words, f)
