@@ -48,7 +48,9 @@ def gen_lines(fullname):
 
 
 def gen_filelist(dirname):
+    dirname = os.path.abspath(dirname)
     for (thisDir, subsHere, filesHere) in os.walk(dirname, followlinks=True):
+        print(filesHere)
         for filename in filesHere:
             if filename.endswith(('.txt','.srt')):
                 fullname = os.path.join(thisDir, filename)
@@ -74,11 +76,11 @@ if __name__ == "__main__":
     from collections  import Counter
 
     try:
-        with open('data.pickle', 'rb') as f:
+        with open('data_.pickle', 'rb') as f:
             words = pickle.load(f)
     except:
         readed_pickle = False
-        dirname = r'./Texts' if len(sys.argv) == 1 else sys.argv[1]
+        dirname = r'../Txt' if len(sys.argv) == 1 else sys.argv[1]
         words = gen_words(dirname)
     else:
         readed_pickle = True
