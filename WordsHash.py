@@ -14,8 +14,8 @@ collusions  = []
 
 start = time.time()
 for w in ws:
-        h = str.__hash__(w)
-        ##h = farmhash.fingerprint64(w)
+        ##h = str.__hash__(w)
+        h = farmhash.fingerprint32(w)
         if h in by_hashes: collusions.append((h, by_hashes[h], w))
         by_hashes[h] = w
 end = time.time()
